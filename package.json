@@ -1,0 +1,29 @@
+{
+  "name": "gram",
+  "version": "1.0.0",
+  "description": "project",
+  "main": "gruntfile.js",
+  "dependencies": {
+    "grunt": "^1.0.3",
+    "grunt-browser-sync": "^2.2.0",
+    "grunt-contrib-watch": "^1.1.0",
+    "install": "^0.12.2",
+    "package-json": "^5.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "grunt dev",
+    "build": "grunt serve"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dik2043/kekstagram.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dik2043/kekstagram/issues"
+  },
+  "homepage": "https://github.com/dik2043/kekstagram#readme"
+}
