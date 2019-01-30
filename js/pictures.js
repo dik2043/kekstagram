@@ -2,6 +2,9 @@ var similarPhotoTemplate = document.querySelector('#picture')
     .content
     .querySelector('.picture__link');
 
+var similarCommentsList = document.querySelector('.social__comments');
+var commentItem = similarCommentsList.querySelectorAll('.social__comment');
+
 var similarPhotoList = document.querySelector('.pictures');
 
 var photoEssence = [];
@@ -17,11 +20,11 @@ var getRandomNumber = function (min, max) {
 var urls = [];
 
 var createUrls = function (i) {
-    var url = 'photos/' + i + '.jpg';
+    var url = 'photos/' + Number(i+1) + '.jpg';
     return url;
 };
 
-for (var i = 1; i <= 25; i++) {
+for (var i = 0; i <= 24; i++) {
     urls[i] = createUrls(i);
 } 
 
@@ -58,14 +61,13 @@ var createObj = function (counter) {
 };
 
 
-
 // Начинаем действия
 
 similarPhotoList.classList.remove('hidden');
 
 /* Cоздаем массив случайных готовых фотографий */
 
-for (var i = 1; i <= 25; i++) {
+for (var i = 0; i <= 24; i++) {
     photoEssence[i] = createObj(i);
 }
 
@@ -83,10 +85,47 @@ var renderPhoto = function (photo) {
 /* Создаем пустое "ведро" (fragment) и прикрепляем к нему генерируемые фото */
 
 var fragment = document.createDocumentFragment();
-for (var i = 1; i < photoEssence.length; i++) {
+for (var i = 0; i < photoEssence.length; i++) {
     renderPhoto(photoEssence[i]);
     fragment.appendChild(renderPhoto(photoEssence[i]));
 } 
 
 similarPhotoList.appendChild(fragment);
 
+
+// Вторая часть с открытой фотографией
+
+var bigPicture = document.querySelector('.big-picture');
+bigPicture.classList.remove('hidden');
+
+console.log(photoEssence[0].likes);
+
+var renderBigPhoto = function (bigPhoto) {
+    // var photoElement = similarPhotoTemplate.cloneNode(true);
+    bigPicture.querySelector('.big-picture__img').querySelector('img').src = bigPhoto.url;
+    bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
+    bigPicture.querySelector('.comments-count').textContent = comments.length;
+    bigPicture.querySelector('.social__caption').textContent = bigPhoto.description;
+    
+    return bigPicture;
+};
+
+renderBigPhoto(photoEssence[0]);
+
+
+var createComment = function (commentList) {
+    var comment = similarCommentsList.querySelector('.social__comment').cloneNode(true);
+    comment.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
+    comment.querySelector('.social__text').textContent = commentList.comments;
+
+    return comment;
+};
+
+
+var commentFragment = document.createDocumentFragment();
+
+for (var i = 0; i < comments.length - 2; i++) {
+    commentFragment.appendChild(createComment(photoEssence[i]));
+} 
+
+similarCommentsList.appendChild(commentFragment);
