@@ -6,6 +6,8 @@ var similarCommentsList = document.querySelector('.social__comments');
 var commentItem = similarCommentsList.querySelectorAll('.social__comment');
 
 var similarPhotoList = document.querySelector('.pictures');
+var commentLoader = document.querySelector('.social__loadmore');
+var commentCount = document.querySelector('.social__comment-count');
 
 var photoEssence = [];
 
@@ -90,18 +92,20 @@ for (var i = 0; i < photoEssence.length; i++) {
     fragment.appendChild(renderPhoto(photoEssence[i]));
 } 
 
+/* Прикрепляем фрагмент с фото к верстке */
+
 similarPhotoList.appendChild(fragment);
 
 
 // Вторая часть с открытой фотографией
 
+
 var bigPicture = document.querySelector('.big-picture');
 bigPicture.classList.remove('hidden');
 
-console.log(photoEssence[0].likes);
+/* Заменяем фото из верстки на геерируемую сущность фотографии из элемента массива с фото */
 
 var renderBigPhoto = function (bigPhoto) {
-    // var photoElement = similarPhotoTemplate.cloneNode(true);
     bigPicture.querySelector('.big-picture__img').querySelector('img').src = bigPhoto.url;
     bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
     bigPicture.querySelector('.comments-count').textContent = comments.length;
@@ -110,22 +114,33 @@ var renderBigPhoto = function (bigPhoto) {
     return bigPicture;
 };
 
-renderBigPhoto(photoEssence[0]);
+renderBigPhoto(photoEssence[1]);
+console.log(photoEssence[1].likes);
 
+/* Создаем  комментарий на основе шаблона */
 
 var createComment = function (commentList) {
-    var comment = similarCommentsList.querySelector('.social__comment').cloneNode(true);
-    comment.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
-    comment.querySelector('.social__text').textContent = commentList.comments;
+    var commentCopy = similarCommentsList.querySelector('.social__comment').cloneNode(true);
+    commentCopy.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
+    commentCopy.querySelector('.social__text').textContent = commentList.comments;
 
-    return comment;
+    return commentCopy;
 };
 
+/* Создаем пустое "ведро" (commentFragment) и прикрепляем к нему генерируемые комменты */
 
 var commentFragment = document.createDocumentFragment();
 
-for (var i = 0; i < comments.length - 2; i++) {
-    commentFragment.appendChild(createComment(photoEssence[i]));
-} 
+for (var i = 0; i < getRandomNumber(0, comments.length - 2); i++) {
+    console.log(i);
+    commentFragment.appendChild(createComment(photoEssence[getRandomNumber(0, comments.length - 1)]));
+}
+
+/* Прикрепляем фрагмент с комментариями к верстке */
 
 similarCommentsList.appendChild(commentFragment);
+
+/* Ну и удаляем ненужные блочки */
+
+commentCount.classList.add('visually-hidden');
+commentLoader.classList.add('visually-hidden');
