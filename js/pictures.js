@@ -1,15 +1,15 @@
-var similarPhotoTemplate = document.querySelector('#picture')
+var similarPhotoTemplate = document.querySelector('#picture')       /* шаблон превью фотографии */
     .content
     .querySelector('.picture__link');
 
-var similarCommentsList = document.querySelector('.social__comments');
-var commentItem = similarCommentsList.querySelectorAll('.social__comment');
+var similarCommentsList = document.querySelector('.social__comments');      /* список комментариев к фото */
+var commentItem = similarCommentsList.querySelectorAll('.social__comment');     /* один коммент из списка */
 
-var similarPhotoList = document.querySelector('.pictures');
-var commentLoader = document.querySelector('.social__loadmore');
-var commentCount = document.querySelector('.social__comment-count');
+var similarPhotoList = document.querySelector('.pictures');     /* контейнер для всех превью */
+var commentLoader = document.querySelector('.social__loadmore');        /* кнопка "загрузить еще" */
+var commentCount = document.querySelector('.social__comment-count');        /* счетчик комментариев */
 
-var photoEssence = [];
+var photoEssence = [];  
 
 /* Получить случайное число */
 
@@ -100,7 +100,7 @@ similarPhotoList.appendChild(fragment);
 // Вторая часть с открытой фотографией
 
 
-var bigPicture = document.querySelector('.big-picture');
+var bigPicture = document.querySelector('.big-picture');        /* открытая фотка */
 bigPicture.classList.remove('hidden');
 
 /* Заменяем фото из верстки на геерируемую сущность фотографии из элемента массива с фото */
@@ -113,9 +113,8 @@ var renderBigPhoto = function (bigPhoto) {
     
     return bigPicture;
 };
-
 renderBigPhoto(photoEssence[1]);
-console.log(photoEssence[1].likes);
+console.log('likes ' +photoEssence[1].likes);
 
 /* Создаем  комментарий на основе шаблона */
 
@@ -123,7 +122,6 @@ var createComment = function (commentList) {
     var commentCopy = similarCommentsList.querySelector('.social__comment').cloneNode(true);
     commentCopy.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
     commentCopy.querySelector('.social__text').textContent = commentList.comments;
-
     return commentCopy;
 };
 
@@ -131,9 +129,17 @@ var createComment = function (commentList) {
 
 var commentFragment = document.createDocumentFragment();
 
-for (var i = 0; i < getRandomNumber(0, comments.length - 2); i++) {
-    console.log(i);
-    commentFragment.appendChild(createComment(photoEssence[getRandomNumber(0, comments.length - 1)]));
+for (var i = 0; i < getRandomNumber(0, comments.length); i++) {
+    var random = getRandomNumber(0, comments.length - 1);
+    console.log(photoEssence[random]);
+    commentFragment.appendChild(createComment(photoEssence[random]));
+}
+
+/* удаляем стандартные комменты из верстки */
+
+var commentsList = similarCommentsList.querySelectorAll('.social__comment');
+for (var i = 0; i < commentsList.length; i++) {
+    similarCommentsList.removeChild(commentsList[i]);
 }
 
 /* Прикрепляем фрагмент с комментариями к верстке */
@@ -144,3 +150,7 @@ similarCommentsList.appendChild(commentFragment);
 
 commentCount.classList.add('visually-hidden');
 commentLoader.classList.add('visually-hidden');
+
+
+// задание 4    задание 4    задание 4    задание 4    задание 4    
+// разобраться с лишними комментариями (удалить)

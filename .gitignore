@@ -1,11 +1,13 @@
 .DS_Store
 .idea
-.idea/
+.idea/*
+*.sln
 *.ai
 *.log
 *.pdf
 *.psd
 *.sublime*
+.idea/
 build/
 node_modules/
 npm-debug.log*
