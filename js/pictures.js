@@ -101,7 +101,7 @@ similarPhotoList.appendChild(fragment);
 
 
 var bigPicture = document.querySelector('.big-picture');        /* открытая фотка */
-bigPicture.classList.remove('hidden');
+// bigPicture.classList.remove('hidden');
 
 /* Заменяем фото из верстки на геерируемую сущность фотографии из элемента массива с фото */
 
@@ -113,8 +113,8 @@ var renderBigPhoto = function (bigPhoto) {
     
     return bigPicture;
 };
-renderBigPhoto(photoEssence[1]);
-console.log('likes ' +photoEssence[1].likes);
+// renderBigPhoto(photoEssence[1]);
+// console.log('likes ' +photoEssence[1].likes);
 
 /* Создаем  комментарий на основе шаблона */
 
@@ -131,7 +131,6 @@ var commentFragment = document.createDocumentFragment();
 
 for (var i = 0; i < getRandomNumber(0, comments.length); i++) {
     var random = getRandomNumber(0, comments.length - 1);
-    console.log(photoEssence[random]);
     commentFragment.appendChild(createComment(photoEssence[random]));
 }
 
@@ -153,4 +152,24 @@ commentLoader.classList.add('visually-hidden');
 
 
 // задание 4    задание 4    задание 4    задание 4    задание 4    
-// разобраться с лишними комментариями (удалить)
+var imgOverlay = document.querySelector('.img-upload__overlay');
+var imgOverlayCloser = imgOverlay.querySelector('.img-upload__cancel');
+
+var uploadFile = document.querySelector('#upload-file');
+
+var showImgOverlay = function () {
+    imgOverlay.classList.remove('hidden');
+};
+
+var closeImgOverlay = function () {
+    imgOverlay.classList.add('hidden');
+};
+
+uploadFile.addEventListener('change', function () {
+    showImgOverlay();
+});
+
+imgOverlayCloser.addEventListener('click', function () { 
+    closeImgOverlay();
+});
+console.log(showImgOverlay);
