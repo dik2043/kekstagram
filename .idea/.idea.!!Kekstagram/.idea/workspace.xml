@@ -23,8 +23,8 @@
       <file leaf-file-name="pictures.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/pictures.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="133">
-              <caret line="190" column="46" lean-forward="true" selection-start-line="190" selection-start-column="46" selection-end-line="190" selection-end-column="46" />
+            <state relative-caret-position="295">
+              <caret line="319" column="38" lean-forward="true" selection-start-line="319" selection-start-column="38" selection-end-line="319" selection-end-column="38" />
             </state>
           </provider>
         </entry>
@@ -57,6 +57,9 @@
       <find>effects__preview--chrome</find>
       <find>styl</find>
       <find>removeAttribute</find>
+      <find>id</find>
+      <find>comments</find>
+      <find>hidde</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -158,12 +161,12 @@
       <workItem from="1548847956338" duration="22225000" />
       <workItem from="1548912807200" duration="5210000" />
       <workItem from="1549429872495" duration="29232000" />
-      <workItem from="1549516598781" duration="11566000" />
+      <workItem from="1549516598781" duration="15831000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="68233000" />
+    <option name="totallyTimeSpent" value="72498000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -186,12 +189,12 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info id="npm" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="7" visible="true" weight="0.25210086" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.25210086" />
       <window_info anchor="bottom" id="NuGet" order="7" />
       <window_info content_ui="combo" id="Project" order="0" sideWeight="0.497479" visible="true" weight="0.18012924" />
       <window_info id="Grunt " order="2" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info active="true" id="Structure" order="1" sideWeight="0.50252104" side_tool="true" visible="true" weight="0.18012924" />
+      <window_info id="Structure" order="1" sideWeight="0.50252104" side_tool="true" visible="true" weight="0.18012924" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -302,8 +305,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/js/pictures.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="190" column="46" lean-forward="true" selection-start-line="190" selection-start-column="46" selection-end-line="190" selection-end-column="46" />
+        <state relative-caret-position="295">
+          <caret line="319" column="38" lean-forward="true" selection-start-line="319" selection-start-column="38" selection-end-line="319" selection-end-column="38" />
         </state>
       </provider>
     </entry>

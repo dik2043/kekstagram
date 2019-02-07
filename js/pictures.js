@@ -75,11 +75,12 @@ for (var i = 0; i <= 24; i++) {
 
 /* Создаем генерируемую сущность фотографии */
 
-var renderPhoto = function (photo) {
+var renderPhoto = function (photo, id) {
     var photoElement = similarPhotoTemplate.cloneNode(true);
     photoElement.querySelector('.picture__img').src = photo.url;
     photoElement.querySelector('.picture__stat--likes').textContent = photo.likes;    
     photoElement.querySelector('.picture__stat--comments').textContent = comments.length;
+    photoElement.dataset.offerId = id;
 
     return photoElement;
 };
@@ -88,8 +89,8 @@ var renderPhoto = function (photo) {
 
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < photoEssence.length; i++) {
-    renderPhoto(photoEssence[i]);
-    fragment.appendChild(renderPhoto(photoEssence[i]));
+    renderPhoto(photoEssence[i], i);
+    fragment.appendChild(renderPhoto(photoEssence[i], i));
 } 
 
 /* Прикрепляем фрагмент с фото к верстке */
@@ -103,25 +104,29 @@ similarPhotoList.appendChild(fragment);
 var bigPicture = document.querySelector('.big-picture');        /* открытая фотка */
 // bigPicture.classList.remove('hidden');
 
-/* Заменяем фото из верстки на геерируемую сущность фотографии из элемента массива с фото */
+/* Заменяем фото из верстки на генерируемую сущность фотографии из элемента массива с фото */
 
 var renderBigPhoto = function (bigPhoto) {
     bigPicture.querySelector('.big-picture__img').querySelector('img').src = bigPhoto.url;
     bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
     bigPicture.querySelector('.comments-count').textContent = comments.length;
     bigPicture.querySelector('.social__caption').textContent = bigPhoto.description;
+    bigPicture.classList.remove('hidden');
+    bigPicture.querySelector('.big-picture__cancel').addEventListener('click', function () {       /* обработчик закрытия */
+        closeBigPhoto();
+    });
     
     return bigPicture;
 };
-// renderBigPhoto(photoEssence[1]);
-// console.log('likes ' +photoEssence[1].likes);
+
 
 /* Создаем  комментарий на основе шаблона */
 
-var createComment = function (commentList) {
+var createComment = function (commentList, id) {
     var commentCopy = similarCommentsList.querySelector('.social__comment').cloneNode(true);
     commentCopy.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
     commentCopy.querySelector('.social__text').textContent = commentList.comments;
+    commentCopy.dataset.offerId = id;
     return commentCopy;
 };
 
@@ -131,7 +136,7 @@ var commentFragment = document.createDocumentFragment();
 
 for (var i = 0; i < getRandomNumber(0, comments.length); i++) {
     var random = getRandomNumber(0, comments.length - 1);
-    commentFragment.appendChild(createComment(photoEssence[random]));
+    commentFragment.appendChild(createComment(photoEssence[random], i));
 }
 
 /* удаляем стандартные комменты из верстки */
@@ -165,15 +170,6 @@ var scalePlus = document.querySelector('.resize__control--plus');
 var scaleMinus = document.querySelector('.resize__control--minus');
 var effectsList = document.querySelector('.effects__list');
 var effectsListItems = effectsList.querySelectorAll('.effects__radio');
-
-// var effectsAnalogy = {      /* попробовать через преобразование в массив */
-//     'effect-chrome': 'effects__preview--chrome',
-//     'effect-sepia': 'effects__preview--sepia',
-//     'effect-marvin': 'effects__preview--marvin',
-//     'effect-phobos': 'effects__preview--phobos',
-//     'effect-heat': 'effects__preview--heat'
-// };
-
 var step = 25;
 scaleValue.value = '100%';
 var value = scaleValue.value;
@@ -302,5 +298,32 @@ for (var i = 0; i < effectsListItems.length; i++) {
         addEffectToItem(evt);
     })
 }
+
+var getId = function (evt) {
+    var clickedElem = evt.target;
+    var offerId = clickedElem.parentNode.dataset.offerId;
+    console.log(offerId);
+    return offerId;
+};
+
+var addListenerToEveryPhoto = function (evt) {
+    var photos = document.querySelectorAll('.picture__img');
+    for (var i = 0; i < photos.length; i++) {
+        photos[i].addEventListener('click', function (evt) {
+            renderBigPhoto(photoEssence[getId(evt)]);
+        });
+    }
+};
+
+// renderBigPhoto(photoEssence[0]);
+
+addListenerToEveryPhoto(photoEssence);
+
+
+var closeBigPhoto = function (evt) {
+    var bigPhoto = document.querySelector('.big-picture__preview');
+    bigPicture.classList.add('hidden');
+    // map.querySelector('.clickedPin').classList.remove('clickedPin');    /* удаление класса на кликнутой метке */
+};
 
 
