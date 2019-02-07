@@ -152,24 +152,155 @@ commentLoader.classList.add('visually-hidden');
 
 
 // задание 4    задание 4    задание 4    задание 4    задание 4    
+
+
+
 var imgOverlay = document.querySelector('.img-upload__overlay');
 var imgOverlayCloser = imgOverlay.querySelector('.img-upload__cancel');
-
+var imgPreview = document.querySelector('.img-upload__preview').querySelector('img');
 var uploadFile = document.querySelector('#upload-file');
+var scalePin = document.querySelector('.scale__pin');
+var scaleValue = document.querySelector('.resize__control--value');
+var scalePlus = document.querySelector('.resize__control--plus');
+var scaleMinus = document.querySelector('.resize__control--minus');
+var effectsList = document.querySelector('.effects__list');
+var effectsListItems = effectsList.querySelectorAll('.effects__radio');
+
+// var effectsAnalogy = {      /* попробовать через преобразование в массив */
+//     'effect-chrome': 'effects__preview--chrome',
+//     'effect-sepia': 'effects__preview--sepia',
+//     'effect-marvin': 'effects__preview--marvin',
+//     'effect-phobos': 'effects__preview--phobos',
+//     'effect-heat': 'effects__preview--heat'
+// };
+
+var step = 25;
+scaleValue.value = '100%';
+var value = scaleValue.value;
+var scaleLine = document.querySelector('.scale__line');
+var intensityEffect;
+
+
+var addEffectToItem = function (evt) {
+    var clickedElem = evt.target;
+    /* сложная строчка - значение инпута, который в родителе кликнутого элемета */
+    var inputValue = clickedElem.parentNode.querySelector('input').value;
+    var imgClass = imgPreview.className;
+    imgPreview.removeAttribute('style');
+    if (imgClass) {
+        imgPreview.classList.remove(imgClass);
+    }     
+    imgPreview.classList.add('effects__preview--' + inputValue);
+};
+
+var getCoordsInPreview = function (obj) {
+    var posY = obj.offsetTop;  // верхний отступ эл-та от родителя
+    var posX = obj.offsetLeft; // левый отступ эл-та от родителя
+    var coords = {
+        'x': posX,
+        'y': posY
+    };
+    return coords;
+};
+
+var getIntensityEffect = function () {
+    return Math.round(getCoordsInPreview(scalePin).x / scaleLine.clientWidth * 100);
+};
 
 var showImgOverlay = function () {
     imgOverlay.classList.remove('hidden');
 };
 
 var closeImgOverlay = function () {
-    imgOverlay.classList.add('hidden');
+    imgOverlay.classList.add('hidden');    
 };
+
+// как сделать нормально этот гребанный фильтр???
+
+var changeSaturation = function () {
+    getIntensityEffect();
+    intensityEffect = getIntensityEffect();
+    console.log(intensityEffect);
+    /* Большая некрасивая проверка */
+    switch(imgPreview.className) {
+        case 'effects__preview--chrome':  
+            imgPreview.style.filter = 'grayscale(' + intensityEffect / 100 + ')';
+            console.log(imgPreview.className);
+            break;
+
+        case 'effects__preview--sepia':
+            imgPreview.style.filter = 'sepia(' + intensityEffect / 100 + ')';
+            break;
+
+        case 'effects__preview--marvin':
+            imgPreview.style.filter = 'invert(' + intensityEffect + '%)';
+            break;
+            
+        case 'effects__preview--phobos':
+            imgPreview.style.filter = 'blur('+ Number(Number(1) + intensityEffect / 50) + 'px)';
+            break;
+            
+        case 'effects__preview--heat':
+            imgPreview.style.filter = 'brightness(' + Number(Number(1) + intensityEffect / 50) + ')';
+            break;
+    }
+};
+
+var getSizePlus = function () {
+    var arr = value.split('%');
+    var value1 = Number(arr[0]);
+    value1 += Number(25);
+    arr[0] = value1;
+    if (value1 >= 100) {
+        value1 = 100;
+    }
+    value = value1 + '%';
+    scaleValue.value = value1 + '%';
+    imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
+    return value;
+};
+
+var getSizeMinus = function () {
+    var arr = value.split('%');
+    var value1 = Number(arr[0]);
+    value1 -= Number(25);
+    arr[0] = value1;
+    if (value1 <= 25) {
+        value1 = 25;
+    }
+    value = value1 + '%';
+    scaleValue.value = value1 + '%';
+    imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
+    return value;
+};
+
 
 uploadFile.addEventListener('change', function () {
     showImgOverlay();
 });
 
-imgOverlayCloser.addEventListener('click', function () { 
+imgOverlayCloser.addEventListener('click', function () {
+    uploadFile.value = null;
     closeImgOverlay();
 });
-console.log(showImgOverlay);
+
+scalePin.addEventListener('mouseup', function () {
+    changeSaturation();
+});
+
+scalePlus.addEventListener('click', function () {  
+    getSizePlus();
+});
+
+scaleMinus.addEventListener('click', function () {
+    getSizeMinus();
+});
+
+
+for (var i = 0; i < effectsListItems.length; i++) {
+    effectsListItems[i].addEventListener('click', function (evt) {
+        addEffectToItem(evt);
+    })
+}
+
+
