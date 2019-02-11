@@ -9,7 +9,7 @@ var similarPhotoList = document.querySelector('.pictures');     /* контей�
 var commentLoader = document.querySelector('.social__loadmore');        /* кнопка "загрузить еще" */
 var commentCount = document.querySelector('.social__comment-count');        /* счетчик комментариев */
 
-var photoEssence = [];  
+var photoEssence = [];
 
 /* Получить случайное число */
 
@@ -28,7 +28,7 @@ var createUrls = function (i) {
 
 for (var i = 0; i <= 24; i++) {
     urls[i] = createUrls(i);
-} 
+}
 
 /* Остальные переменные */
 
@@ -50,13 +50,26 @@ var descriptions = [
     'Вот это тачка!'
 ];
 
+/* для заполнения массива newComments случайными элементами из comments !без повторения! */
+
+var toRecycleArr = function (newArr, oldArr) {
+    var transitArr = oldArr.concat();           /* копировать массив, чтобы не изменять стырый */
+    for (var i = 0; i <= getRandomNumber(0, oldArr.length - 1); i++) {
+        var random = getRandomNumber(0, transitArr.length - 1);                                     /* Как можно лучше? */
+        newArr[i] = transitArr[random];
+        transitArr.splice(random, 1);
+    }
+};
+
 /* Создать случайный объект (сущность фотографии) */
 
-var createObj = function (counter, comments) {
+var createObj = function (counter) {
+    var newComments = [];
+    toRecycleArr(newComments, comments);
     var obj = {
         'url': urls[counter],
         'likes': getRandomNumber(15, 200),
-        'comments': comments[getRandomNumber(0, comments.length - 1)],
+        'comments': newComments,
         'description': descriptions[getRandomNumber(0, descriptions.length - 1)]
     };
     return obj;
@@ -70,7 +83,7 @@ similarPhotoList.classList.remove('hidden');
 /* Наполняем массив случайных готовых фотографий */
 
 for (var i = 0; i <= 24; i++) {
-    photoEssence[i] = createObj(i, comments);
+    photoEssence[i] = createObj(i);
 }
 
 /* Создаем генерируемую сущность фотографии */
@@ -78,8 +91,8 @@ for (var i = 0; i <= 24; i++) {
 var renderPhoto = function (photo, id) {
     var photoElement = similarPhotoTemplate.cloneNode(true);
     photoElement.querySelector('.picture__img').src = photo.url;
-    photoElement.querySelector('.picture__stat--likes').textContent = photo.likes;    
-    photoElement.querySelector('.picture__stat--comments').textContent = comments.length;
+    photoElement.querySelector('.picture__stat--likes').textContent = photo.likes;
+    photoElement.querySelector('.picture__stat--comments').textContent = photo.comments.length;
     photoElement.dataset.offerId = id;
 
     return photoElement;
@@ -89,9 +102,9 @@ var renderPhoto = function (photo, id) {
 
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < photoEssence.length; i++) {
-    renderPhoto(photoEssence[i], i);
+    // renderPhoto(photoEssence[i], i);
     fragment.appendChild(renderPhoto(photoEssence[i], i));
-} 
+}
 
 /* Прикрепляем фрагмент с фото к верстке */
 
@@ -102,53 +115,59 @@ similarPhotoList.appendChild(fragment);
 
 
 var bigPicture = document.querySelector('.big-picture');        /* открытая фотка */
-// bigPicture.classList.remove('hidden');
 
-/* Заменяем фото из верстки на генерируемую сущность фотографии из элемента массива с фото */
+/* Создаем пустое "ведро" (commentFragment) для комментариев */
+
+var commentFragment = document.createDocumentFragment();
+
+/* Функция замены фото из верстки на генерируемую сущность фотографии из элемента массива с фото */
 
 var renderBigPhoto = function (bigPhoto) {
     bigPicture.querySelector('.big-picture__img').querySelector('img').src = bigPhoto.url;
     bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
-    bigPicture.querySelector('.comments-count').textContent = comments.length;
+    bigPicture.querySelector('.comments-count').textContent = bigPhoto.comments.length;
     bigPicture.querySelector('.social__caption').textContent = bigPhoto.description;
     bigPicture.classList.remove('hidden');
     bigPicture.querySelector('.big-picture__cancel').addEventListener('click', function () {       /* обработчик закрытия */
         closeBigPhoto();
     });
+
+    /* Создаем  комментарии с нуля */
+    
+    for (var i = 0; i < bigPhoto.comments.length; i++) {      
+        var newComment = document.createElement('li');
+        newComment.className = 'social__comment social__comment--text';
+
+        var commentImg = document.createElement('img');
+        commentImg.width = 35;
+        commentImg.height = 35;
+        commentImg.alt = 'Аватар комментатора фотографии';
+        commentImg.className = 'social__picture';
+        commentImg.src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
+
+        newComment.appendChild(commentImg);
+        
+        var commentText = document.createElement('p');
+        commentText.className = 'social__text';
+        commentText.textContent = bigPhoto.comments[i];
+
+        newComment.appendChild(commentText);
+        commentFragment.appendChild(newComment);
+    }
+    
+    /* удаляем стандартные комменты из верстки */
+
+    var commentsList = similarCommentsList.querySelectorAll('.social__comment');
+    for (var i = 0; i < commentsList.length; i++) {
+        similarCommentsList.removeChild(commentsList[i]);
+    }
+
+    /* и прикрепляем к ведру созданные комменты */
+    
+    similarCommentsList.appendChild(commentFragment);
     
     return bigPicture;
 };
-
-
-/* Создаем  комментарий на основе шаблона */
-
-var createComment = function (commentList, id) {
-    var commentCopy = similarCommentsList.querySelector('.social__comment').cloneNode(true);
-    commentCopy.querySelector('.social__picture').src = 'img/avatar-' + getRandomNumber(1, 6) + '.svg';
-    commentCopy.querySelector('.social__text').textContent = commentList.comments;
-    commentCopy.dataset.offerId = id;
-    return commentCopy;
-};
-
-/* Создаем пустое "ведро" (commentFragment) и прикрепляем к нему генерируемые комменты */
-
-var commentFragment = document.createDocumentFragment();
-
-for (var i = 0; i < getRandomNumber(0, comments.length); i++) {
-    var random = getRandomNumber(0, comments.length - 1);
-    commentFragment.appendChild(createComment(photoEssence[random], i));
-}
-
-/* удаляем стандартные комменты из верстки */
-
-var commentsList = similarCommentsList.querySelectorAll('.social__comment');
-for (var i = 0; i < commentsList.length; i++) {
-    similarCommentsList.removeChild(commentsList[i]);
-}
-
-/* Прикрепляем фрагмент с комментариями к верстке */
-
-similarCommentsList.appendChild(commentFragment);
 
 /* Ну и удаляем ненужные блочки */
 
@@ -185,7 +204,7 @@ var addEffectToItem = function (evt) {
     imgPreview.removeAttribute('style');
     if (imgClass) {
         imgPreview.classList.remove(imgClass);
-    }     
+    }
     imgPreview.classList.add('effects__preview--' + inputValue);
 };
 
@@ -208,7 +227,7 @@ var showImgOverlay = function () {
 };
 
 var closeImgOverlay = function () {
-    imgOverlay.classList.add('hidden');    
+    imgOverlay.classList.add('hidden');
 };
 
 // как сделать нормально этот гребанный фильтр???
@@ -219,7 +238,7 @@ var changeSaturation = function () {
     console.log(intensityEffect);
     /* Большая некрасивая проверка */
     switch(imgPreview.className) {
-        case 'effects__preview--chrome':  
+        case 'effects__preview--chrome':
             imgPreview.style.filter = 'grayscale(' + intensityEffect / 100 + ')';
             console.log(imgPreview.className);
             break;
@@ -231,11 +250,11 @@ var changeSaturation = function () {
         case 'effects__preview--marvin':
             imgPreview.style.filter = 'invert(' + intensityEffect + '%)';
             break;
-            
+
         case 'effects__preview--phobos':
             imgPreview.style.filter = 'blur('+ Number(Number(1) + intensityEffect / 50) + 'px)';
             break;
-            
+
         case 'effects__preview--heat':
             imgPreview.style.filter = 'brightness(' + Number(Number(1) + intensityEffect / 50) + ')';
             break;
@@ -284,7 +303,7 @@ scalePin.addEventListener('mouseup', function () {
     changeSaturation();
 });
 
-scalePlus.addEventListener('click', function () {  
+scalePlus.addEventListener('click', function () {
     getSizePlus();
 });
 
@@ -315,15 +334,12 @@ var addListenerToEveryPhoto = function (evt) {
     }
 };
 
-// renderBigPhoto(photoEssence[0]);
-
 addListenerToEveryPhoto(photoEssence);
 
 
 var closeBigPhoto = function (evt) {
     var bigPhoto = document.querySelector('.big-picture__preview');
     bigPicture.classList.add('hidden');
-    // map.querySelector('.clickedPin').classList.remove('clickedPin');    /* удаление класса на кликнутой метке */
 };
 
 
