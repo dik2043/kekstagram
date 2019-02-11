@@ -102,13 +102,13 @@ var renderPhoto = function (photo, id) {
 
 var fragment = document.createDocumentFragment();
 for (var i = 0; i < photoEssence.length; i++) {
-    // renderPhoto(photoEssence[i], i);
     fragment.appendChild(renderPhoto(photoEssence[i], i));
 }
 
 /* Прикрепляем фрагмент с фото к верстке */
 
 similarPhotoList.appendChild(fragment);
+
 
 
 // Вторая часть с открытой фотографией
@@ -131,6 +131,8 @@ var renderBigPhoto = function (bigPhoto) {
     bigPicture.querySelector('.big-picture__cancel').addEventListener('click', function () {       /* обработчик закрытия */
         closeBigPhoto();
     });
+
+    document.addEventListener('keydown', onPopupEscPress);
 
     /* Создаем  комментарии с нуля */
     
@@ -165,7 +167,7 @@ var renderBigPhoto = function (bigPhoto) {
     /* и прикрепляем к ведру созданные комменты */
     
     similarCommentsList.appendChild(commentFragment);
-    
+
     return bigPicture;
 };
 
@@ -175,7 +177,7 @@ commentCount.classList.add('visually-hidden');
 commentLoader.classList.add('visually-hidden');
 
 
-// задание 4    задание 4    задание 4    задание 4    задание 4    
+// задание 4    задание 4    задание 4    задание 4    задание 4
 
 
 
@@ -191,10 +193,11 @@ var effectsList = document.querySelector('.effects__list');
 var effectsListItems = effectsList.querySelectorAll('.effects__radio');
 var step = 25;
 scaleValue.value = '100%';
-var value = scaleValue.value;
 var scaleLine = document.querySelector('.scale__line');
 var intensityEffect;
+var textHashtags = document.querySelector('.text__hashtags');
 
+/* Добавить эффект */
 
 var addEffectToItem = function (evt) {
     var clickedElem = evt.target;
@@ -208,6 +211,8 @@ var addEffectToItem = function (evt) {
     imgPreview.classList.add('effects__preview--' + inputValue);
 };
 
+/* Получить координаты от родителя */
+
 var getCoordsInPreview = function (obj) {
     var posY = obj.offsetTop;  // верхний отступ эл-та от родителя
     var posX = obj.offsetLeft; // левый отступ эл-та от родителя
@@ -218,16 +223,25 @@ var getCoordsInPreview = function (obj) {
     return coords;
 };
 
+/* Получить значение шкалы интенсивности */
+
 var getIntensityEffect = function () {
     return Math.round(getCoordsInPreview(scalePin).x / scaleLine.clientWidth * 100);
 };
 
+/* Показать и закрыть блок фильтров */
+
 var showImgOverlay = function () {
     imgOverlay.classList.remove('hidden');
+    scaleValue.value = '100%';
+    imgPreview.style.transform = 'scale(' + 1 + ')';
+    console.log(scaleValue);
 };
 
 var closeImgOverlay = function () {
+    uploadFile.value = null;
     imgOverlay.classList.add('hidden');
+    document.removeEventListener('keydown', onPreviewEscPress); /* убрать слушатель */
 };
 
 // как сделать нормально этот гребанный фильтр???
@@ -261,41 +275,14 @@ var changeSaturation = function () {
     }
 };
 
-var getSizePlus = function () {
-    var arr = value.split('%');
-    var value1 = Number(arr[0]);        /* как можно лучше? */
-    value1 += Number(25);
-    arr[0] = value1;
-    if (value1 >= 100) {
-        value1 = 100;
-    }
-    value = value1 + '%';
-    scaleValue.value = value1 + '%';
-    imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
-    return value;
-};
-
-var getSizeMinus = function () {
-    var arr = value.split('%');
-    var value1 = Number(arr[0]);
-    value1 -= Number(25);
-    arr[0] = value1;
-    if (value1 <= 25) {
-        value1 = 25;
-    }
-    value = value1 + '%';
-    scaleValue.value = value1 + '%';
-    imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
-    return value;
-};
-
+/* Добавить все нужные слушатели */
 
 uploadFile.addEventListener('change', function () {
     showImgOverlay();
+    document.addEventListener('keydown', onPreviewEscPress);
 });
 
 imgOverlayCloser.addEventListener('click', function () {
-    uploadFile.value = null;
     closeImgOverlay();
 });
 
@@ -318,12 +305,16 @@ for (var i = 0; i < effectsListItems.length; i++) {
     })
 }
 
+/* Получить id кликнутой фотки для открытия нуной */
+
 var getId = function (evt) {
     var clickedElem = evt.target;
     var offerId = clickedElem.parentNode.dataset.offerId;
     console.log(offerId);
     return offerId;
 };
+
+/* Добавить обработчик открытия на кадую фотку */
 
 var addListenerToEveryPhoto = function (evt) {
     var photos = document.querySelectorAll('.picture__img');
@@ -336,10 +327,63 @@ var addListenerToEveryPhoto = function (evt) {
 
 addListenerToEveryPhoto(photoEssence);
 
+/* Закрыть большую фотку */
 
 var closeBigPhoto = function (evt) {
     var bigPhoto = document.querySelector('.big-picture__preview');
     bigPicture.classList.add('hidden');
+    document.removeEventListener('keydown', onPopupEscPress);       /* убрать слушатель */
 };
 
+var onPopupEscPress = function (evt) {
+    console.log(evt.target);
+    if (evt.keyCode === 27 && evt.target.tagName  === 'INPUT') {       /* если фокус на поле, то не закрываем */
+        evt.target.blur();
+    } else if (evt.keyCode === 27) {       /* esc */
+        closeBigPhoto();
+    }
+};
+
+var onPreviewEscPress = function (evt) {
+    console.log(evt.target);
+    if (evt.keyCode === 27 && evt.target.className  === 'text__hashtags') {       /* если фокус на поле, то не закрываем */
+        evt.target.blur();
+    } else if (evt.keyCode === 27 && evt.target.tagName === 'TEXTAREA') {
+        evt.target.blur();
+    } else if (evt.keyCode === 27) {       /* esc */
+        closeImgOverlay();
+    }
+};
+
+/* Увеличить и уменьшить значение размера */
+
+var getSizePlus = function () {
+    var value = scaleValue.value;
+    var arr = value.split('%');
+    var value1 = Number(arr[0]);        /* как можно лучше? */
+    value1 += Number(25);
+    arr[0] = value1;
+    if (value1 >= 100) {
+        value1 = 100;
+    }
+    value = value1 + '%';
+    scaleValue.value = value1 + '%';
+    imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
+    return value;
+};
+
+var getSizeMinus = function () {
+    var value = scaleValue.value;
+    var arr = value.split('%');
+    var value1 = Number(arr[0]);
+    value1 -= Number(25);                /* как можно лучше? */
+    arr[0] = value1;
+    if (value1 <= 25) {
+        value1 = 25;
+    }
+    value = value1 + '%';
+    scaleValue.value = value1 + '%';
+    imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
+    return value;
+};
 
