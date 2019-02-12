@@ -196,6 +196,8 @@ scaleValue.value = '100%';
 var scaleLine = document.querySelector('.scale__line');
 var intensityEffect;
 var textHashtags = document.querySelector('.text__hashtags');
+var textDescription = document.querySelector('.text__description');
+var submitImg = document.querySelector('.img-upload__submit');
 
 /* Добавить эффект */
 
@@ -235,13 +237,14 @@ var showImgOverlay = function () {
     imgOverlay.classList.remove('hidden');
     scaleValue.value = '100%';
     imgPreview.style.transform = 'scale(' + 1 + ')';
-    console.log(scaleValue);
 };
 
 var closeImgOverlay = function () {
     uploadFile.value = null;
     imgOverlay.classList.add('hidden');
     document.removeEventListener('keydown', onPreviewEscPress); /* убрать слушатель */
+    document.removeEventListener('keydown', onPreviewEnterPress);
+    // document.removeEventListener('keydown', checkFields());
 };
 
 // как сделать нормально этот гребанный фильтр???
@@ -280,6 +283,7 @@ var changeSaturation = function () {
 uploadFile.addEventListener('change', function () {
     showImgOverlay();
     document.addEventListener('keydown', onPreviewEscPress);
+    document.addEventListener('keydown', onPreviewEnterPress);
 });
 
 imgOverlayCloser.addEventListener('click', function () {
@@ -344,8 +348,15 @@ var onPopupEscPress = function (evt) {
     }
 };
 
+var onPreviewEnterPress = function (evt) {
+    if (evt.keyCode === 13 && evt.target.className  === 'text__hashtags') {       /* если фокус на поле, то не закрываем */
+        evt.target.blur();
+    } else if (evt.keyCode === 13 && evt.target.tagName === 'TEXTAREA') {
+        evt.target.blur();
+    } 
+};
+
 var onPreviewEscPress = function (evt) {
-    console.log(evt.target);
     if (evt.keyCode === 27 && evt.target.className  === 'text__hashtags') {       /* если фокус на поле, то не закрываем */
         evt.target.blur();
     } else if (evt.keyCode === 27 && evt.target.tagName === 'TEXTAREA') {
@@ -387,3 +398,44 @@ var getSizeMinus = function () {
     return value;
 };
 
+/* Проверить поля формы */
+
+textHashtags.addEventListener('input', function (evt) {
+    checkFields(evt);
+});
+
+var checkFields = function (evt) {
+    var target = evt.target;
+    var hastags = target.value.split(' ');
+    var check;
+    for (var i = 0; i < hastags.length; i++) {
+        for (var j = i + 1; j < hastags.length; j++) {
+            if (hastags[i] === hastags[j]) {
+                check = true;
+                break
+            } else {
+                check = false;
+            }
+        }
+        if (check) {
+            target.setCustomValidity('Имя тега не может повторяться');
+            break
+        } else if (hastags.length > 5) {
+            target.setCustomValidity('Моет быть не более 5 тегов');
+        } else if (!(hastags[i][0] === '#')) {
+            target.setCustomValidity('Имя тега должно начинаться с символа #');
+        } else if (hastags[i].length > 20) {
+            target.setCustomValidity('В имени тега может быть не более 20 символов');
+        } else if (hastags[i][0] === '#' && hastags[i].length <= 1) {
+            target.setCustomValidity('Имя тега не может состоять из одного символа #');
+        } else {
+            target.setCustomValidity('');
+        }
+    }
+};
+
+
+
+// Заметки
+// Как сделать проверку на разделение пробелом?
+// Как сделать проверку на регистр?
