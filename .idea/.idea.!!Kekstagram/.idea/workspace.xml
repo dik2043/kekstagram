@@ -14,8 +14,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="196">
-              <caret line="112" column="63" lean-forward="true" selection-start-line="112" selection-start-column="63" selection-end-line="112" selection-end-column="63" />
+            <state relative-caret-position="442">
+              <caret line="206" column="10" lean-forward="true" selection-start-line="206" selection-start-column="10" selection-end-line="206" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -23,8 +23,8 @@
       <file leaf-file-name="picturesNew.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="402">
-              <caret line="419" selection-start-line="419" selection-end-line="419" />
+            <state relative-caret-position="238">
+              <caret line="239" column="40" selection-start-line="239" selection-start-column="40" selection-end-line="239" selection-end-column="40" />
             </state>
           </provider>
         </entry>
@@ -32,8 +32,8 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15010">
-              <caret line="790" column="1" selection-start-line="790" selection-start-column="1" selection-end-line="790" selection-end-column="25" />
+            <state relative-caret-position="285">
+              <caret line="804" lean-forward="true" selection-start-line="804" selection-end-line="804" />
             </state>
           </provider>
         </entry>
@@ -42,10 +42,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>sepia</find>
-      <find>effects__preview--chrome</find>
-      <find>styl</find>
-      <find>removeAttribute</find>
       <find>id</find>
       <find>comments</find>
       <find>hidde</find>
@@ -69,9 +65,13 @@
       <find>img-upload__submit</find>
       <find>mg-upload__submit</find>
       <find>submitImg</find>
-      <find>chan</find>
       <find>textDescription</find>
       <find>text__description</find>
+      <find>chan</find>
+      <find>scaleL</find>
+      <find>effects__preview</find>
+      <find>scale__line</find>
+      <find>effects__preview--none</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -80,9 +80,9 @@
         <option value="$PROJECT_DIR$/package-lock.json" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/js/pictures.js" />
         <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/css/style.css" />
         <option value="$PROJECT_DIR$/js/picturesNew.js" />
       </list>
     </option>
@@ -161,6 +161,22 @@
       </list>
     </option>
   </component>
+  <component name="RunManager">
+    <configuration name="build" type="js.build_tools.npm" factoryName="npm" temporary="true" nameIsGenerated="true">
+      <package-json value="$PROJECT_DIR$/package.json" />
+      <command value="run" />
+      <scripts>
+        <script value="build" />
+      </scripts>
+      <node-interpreter value="project" />
+      <envs />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="npm.build" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SvnConfiguration">
     <configuration />
   </component>
@@ -177,12 +193,13 @@
       <workItem from="1549516598781" duration="16622000" />
       <workItem from="1549775800403" duration="6363000" />
       <workItem from="1549861888307" duration="28395000" />
-      <workItem from="1549949408347" duration="6242000" />
+      <workItem from="1549949408347" duration="6651000" />
+      <workItem from="1550137696677" duration="3926000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114289000" />
+    <option name="totallyTimeSpent" value="118624000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -202,17 +219,17 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Unit Tests" order="7" weight="0.10420168" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info id="npm" order="2" side_tool="true" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="7" visible="true" weight="0.21512605" />
+      <window_info id="npm" order="2" sideWeight="0.5084746" side_tool="true" weight="0.12600969" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.32973805" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.19722651" />
       <window_info anchor="bottom" id="NuGet" order="7" />
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49243698" visible="true" weight="0.124394186" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4915254" visible="true" weight="0.12600969" />
       <window_info id="Grunt " order="2" side_tool="true" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info id="Structure" order="1" sideWeight="0.50756305" side_tool="true" visible="true" weight="0.124394186" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Structure" order="1" sideWeight="0.5084746" side_tool="true" weight="0.12600969" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -235,6 +252,27 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2128">
+          <caret line="112" column="63" lean-forward="true" selection-start-line="112" selection-start-column="63" selection-end-line="112" selection-end-column="63" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15010">
+          <caret line="790" column="1" selection-start-line="790" selection-start-column="1" selection-end-line="790" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="8284">
+          <caret line="436" lean-forward="true" selection-start-line="436" selection-end-line="436" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="608">
@@ -375,13 +413,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15010">
-          <caret line="790" column="1" selection-start-line="790" selection-start-column="1" selection-end-line="790" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/rider.jar!/resources/html5-schema/html5/web-forms.rnc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -391,15 +422,22 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/index.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="196">
-          <caret line="112" column="63" lean-forward="true" selection-start-line="112" selection-start-column="63" selection-end-line="112" selection-end-column="63" />
+        <state relative-caret-position="442">
+          <caret line="206" column="10" lean-forward="true" selection-start-line="206" selection-start-column="10" selection-end-line="206" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="804" lean-forward="true" selection-start-line="804" selection-end-line="804" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="402">
-          <caret line="419" selection-start-line="419" selection-end-line="419" />
+        <state relative-caret-position="238">
+          <caret line="239" column="40" selection-start-line="239" selection-start-column="40" selection-end-line="239" selection-end-column="40" />
         </state>
       </provider>
     </entry>

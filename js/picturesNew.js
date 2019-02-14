@@ -203,6 +203,8 @@ var submitImg = document.querySelector('.img-upload__submit');
 
 var addEffectToItem = function (evt) {
     var clickedElem = evt.target;
+    scalePin.style.left = scaleLine.clientWidth + 'px';
+    document.querySelector('.scale__level').style.width = '100%';       /* ширина полосы */
     /* сложная строчка - значение инпута, который в родителе кликнутого элемета */
     var inputValue = clickedElem.parentNode.querySelector('input').value;
     var imgClass = imgPreview.className;
@@ -234,6 +236,8 @@ var getIntensityEffect = function () {
 /* Показать и закрыть блок фильтров */
 
 var showImgOverlay = function () {
+    imgPreview.className = 'effects__preview--none';        /* ставим класс без фильтра */
+    imgPreview.removeAttribute('style');        /* уюираем атрибуты фильтра*/
     imgOverlay.classList.remove('hidden');
     scaleValue.value = '100%';
     imgPreview.style.transform = 'scale(' + 1 + ')';
@@ -247,51 +251,18 @@ var closeImgOverlay = function () {
     // document.removeEventListener('keydown', checkFields());
 };
 
-// как сделать нормально этот гребанный фильтр???
-
-var changeSaturation = function () {
-    getIntensityEffect();
-    intensityEffect = getIntensityEffect();
-    console.log(intensityEffect);
-    /* Большая некрасивая проверка */
-    switch(imgPreview.className) {
-        case 'effects__preview--chrome':
-            imgPreview.style.filter = 'grayscale(' + intensityEffect / 100 + ')';
-            console.log(imgPreview.className);
-            break;
-
-        case 'effects__preview--sepia':
-            imgPreview.style.filter = 'sepia(' + intensityEffect / 100 + ')';
-            break;
-
-        case 'effects__preview--marvin':
-            imgPreview.style.filter = 'invert(' + intensityEffect + '%)';
-            break;
-
-        case 'effects__preview--phobos':
-            imgPreview.style.filter = 'blur('+ Number(Number(1) + intensityEffect / 50) + 'px)';
-            break;
-
-        case 'effects__preview--heat':
-            imgPreview.style.filter = 'brightness(' + Number(Number(1) + intensityEffect / 50) + ')';
-            break;
-    }
-};
-
 /* Добавить все нужные слушатели */
 
 uploadFile.addEventListener('change', function () {
     showImgOverlay();
+    scalePin.style.left = scaleLine.clientWidth + 'px';
+    document.querySelector('.scale__level').style.width = '100%';       /* ширина полосы */
     document.addEventListener('keydown', onPreviewEscPress);
     document.addEventListener('keydown', onPreviewEnterPress);
 });
 
 imgOverlayCloser.addEventListener('click', function () {
     closeImgOverlay();
-});
-
-scalePin.addEventListener('mouseup', function () {
-    changeSaturation();
 });
 
 scalePlus.addEventListener('click', function () {
@@ -309,7 +280,7 @@ for (var i = 0; i < effectsListItems.length; i++) {
     })
 }
 
-/* Получить id кликнутой фотки для открытия нуной */
+/* Получить id кликнутой фотки для открытия нужной */
 
 var getId = function (evt) {
     var clickedElem = evt.target;
@@ -398,6 +369,78 @@ var getSizeMinus = function () {
     return value;
 };
 
+// как сделать нормально этот гребанный фильтр???
+
+scalePin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
+
+    var startCoords = {
+        x: evt.clientX
+    };
+    
+    var onMouseMove = function (moveEvt) {
+        moveEvt.preventDefault();
+
+        var shift = {
+            x: startCoords.x - moveEvt.clientX
+        };
+
+        startCoords = {
+            x: moveEvt.clientX
+        };
+
+        scalePin.style.left = (scalePin.offsetLeft - shift.x) + 'px';
+        changeSaturation();
+        
+        if (scalePin.offsetLeft < 0) {
+            scalePin.style.left = 0 + 'px';
+        } else if (scalePin.offsetLeft > scaleLine.clientWidth) {
+            scalePin.style.left = scaleLine.clientWidth + 'px';
+        } 
+    };
+
+    var onMouseUp = function (upEvt) {
+        upEvt.preventDefault();
+
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseup', onMouseUp);
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+});
+
+var changeSaturation = function () {
+    getIntensityEffect();
+    intensityEffect = getIntensityEffect();
+    document.querySelector('.scale__level').style.width = intensityEffect + '%';    /* ширина полосы */
+    console.log(intensityEffect);
+    /* Большая некрасивая проверка */
+    switch(imgPreview.className) {
+        case 'effects__preview--chrome':
+            imgPreview.style.filter = 'grayscale(' + intensityEffect / 100 + ')';
+            console.log(imgPreview.className);
+            break;
+
+        case 'effects__preview--sepia':
+            imgPreview.style.filter = 'sepia(' + intensityEffect / 100 + ')';
+            break;
+
+        case 'effects__preview--marvin':
+            imgPreview.style.filter = 'invert(' + intensityEffect + '%)';
+            break;
+
+        case 'effects__preview--phobos':
+            imgPreview.style.filter = 'blur('+ intensityEffect / 33 + 'px)';
+            break;
+
+        case 'effects__preview--heat':
+            imgPreview.style.filter = 'brightness(' + Number(Number(1) + intensityEffect / 50) + ')';
+            break;
+    }
+};
+
+
 /* Проверить поля формы */
 
 textHashtags.addEventListener('input', function (evt) {
@@ -439,3 +482,4 @@ var checkFields = function (evt) {
 // Заметки
 // Как сделать проверку на разделение пробелом?
 // Как сделать проверку на регистр?
+// В заданиях пункт - при переключении на оригинал слайдер скрывается - как сделать?
