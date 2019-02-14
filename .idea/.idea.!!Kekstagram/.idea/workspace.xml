@@ -14,26 +14,44 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="442">
-              <caret line="206" column="10" lean-forward="true" selection-start-line="206" selection-start-column="10" selection-end-line="206" selection-end-column="10" />
+            <state relative-caret-position="371">
+              <caret line="211" column="24" selection-start-line="211" selection-start-column="24" selection-end-line="211" selection-end-column="24" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="picturesNew.js" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
+      <file leaf-file-name="pictures.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/pictures.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="239" column="40" selection-start-line="239" selection-start-column="40" selection-end-line="239" selection-end-column="40" />
+            <state relative-caret-position="209">
+              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/css/style.css">
+      <file leaf-file-name="data.js" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/js/data.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="285">
-              <caret line="804" lean-forward="true" selection-start-line="804" selection-end-line="804" />
+            <state relative-caret-position="95">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="picture-and-preview.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/picture-and-preview.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="684">
+              <caret line="137" column="15" selection-start-line="137" selection-end-line="138" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="form.js" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/js/form.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="95">
+              <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
             </state>
           </provider>
         </entry>
@@ -42,15 +60,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>id</find>
-      <find>comments</find>
-      <find>hidde</find>
-      <find>picture__stat--comment</find>
-      <find>social__com</find>
-      <find>similarCommentsList</find>
-      <find>social__caption</find>
-      <find>close</find>
-      <find>removeE</find>
       <find>text__hashtags</find>
       <find>scaleValue</find>
       <find>picture__stat--likes</find>
@@ -72,6 +81,15 @@
       <find>effects__preview</find>
       <find>scale__line</find>
       <find>effects__preview--none</find>
+      <find>bigPicture</find>
+      <find>commentItem</find>
+      <find>similarCommentsList</find>
+      <find>similarPhotoTemplate</find>
+      <find>getRandomNumber</find>
+      <find>similarPhotoList</find>
+      <find>getRa</find>
+      <find>photoEssence</find>
+      <find>getId</find>
     </findStrings>
   </component>
   <component name="IdeDocumentHistory">
@@ -80,10 +98,13 @@
         <option value="$PROJECT_DIR$/package-lock.json" />
         <option value="$PROJECT_DIR$/package.json" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/js/pictures.js" />
-        <option value="$PROJECT_DIR$/index.html" />
         <option value="$PROJECT_DIR$/css/style.css" />
+        <option value="$PROJECT_DIR$/js/form.js" />
+        <option value="$PROJECT_DIR$/js/data.js" />
         <option value="$PROJECT_DIR$/js/picturesNew.js" />
+        <option value="$PROJECT_DIR$/index.html" />
+        <option value="$PROJECT_DIR$/js/pictures.js" />
+        <option value="$PROJECT_DIR$/js/picture-and-preview.js" />
       </list>
     </option>
   </component>
@@ -194,12 +215,12 @@
       <workItem from="1549775800403" duration="6363000" />
       <workItem from="1549861888307" duration="28395000" />
       <workItem from="1549949408347" duration="6651000" />
-      <workItem from="1550137696677" duration="3926000" />
+      <workItem from="1550137696677" duration="8056000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="118624000" />
+    <option name="totallyTimeSpent" value="122754000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -222,7 +243,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
       <window_info id="npm" order="2" sideWeight="0.5084746" side_tool="true" weight="0.12600969" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32973805" />
-      <window_info anchor="bottom" id="Terminal" order="7" weight="0.19722651" />
+      <window_info anchor="bottom" id="Terminal" order="7" weight="0.42681047" />
       <window_info anchor="bottom" id="NuGet" order="7" />
       <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4915254" visible="true" weight="0.12600969" />
       <window_info id="Grunt " order="2" side_tool="true" />
@@ -266,7 +287,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
+    <entry file="file://$PROJECT_DIR$/js/pictures.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="8284">
           <caret line="436" lean-forward="true" selection-start-line="436" selection-end-line="436" />
@@ -287,7 +308,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
+    <entry file="file://$PROJECT_DIR$/js/pictures.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="7923">
           <caret line="417" lean-forward="true" selection-start-line="417" selection-end-line="417" />
@@ -406,13 +427,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/pictures.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="45">
-          <caret line="55" column="15" lean-forward="true" selection-end-line="329" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$APPLICATION_HOME_DIR$/lib/rider.jar!/resources/html5-schema/html5/web-forms.rnc">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -420,24 +434,52 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/index.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="442">
-          <caret line="206" column="10" lean-forward="true" selection-start-line="206" selection-start-column="10" selection-end-line="206" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
+        <state relative-caret-position="171">
           <caret line="804" lean-forward="true" selection-start-line="804" selection-end-line="804" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/js/picturesNew.js">
+    <entry file="file://$PROJECT_DIR$/js/pictures.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="239" column="40" selection-start-line="239" selection-start-column="40" selection-end-line="239" selection-end-column="40" />
+        <state relative-caret-position="45">
+          <caret line="103" column="4" selection-start-line="103" selection-start-column="4" selection-end-line="103" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/form.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" column="4" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="371">
+          <caret line="211" column="24" selection-start-line="211" selection-start-column="24" selection-end-line="211" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/picture-and-preview.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="137" column="15" selection-start-line="137" selection-end-line="138" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/pictures.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="209">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/js/data.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="95">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
         </state>
       </provider>
     </entry>
