@@ -3,14 +3,10 @@
 // Файл отвечает за проверку формы
 
 (function () {
+
+    var textHashtags = document.querySelector('.text__hashtags');   /* поле хэштэгов */
     
-    /* Проверить поля формы */
-
-    var textHashtags = document.querySelector('.text__hashtags');
-    textHashtags.addEventListener('input', function (evt) {
-        checkFields(evt);
-    });
-
+    /*  как проверять поле хэштегов */
     var checkFields = function (evt) {
         var target = evt.target;
         var hastags = target.value.split(' ');
@@ -40,6 +36,22 @@
             }
         }
     };
+
+    // Проверяем поля формы 
+    
+    textHashtags.addEventListener('input', function (evt) {
+        checkFields(evt);
+    });
+    
+    // Изменяем поведение при подтверждении формы
+
+    var uploadForm = document.querySelector('.img-upload__form');
+    uploadForm.addEventListener('submit', function (evt) {
+        window.backend.save(new FormData(uploadForm), function () {
+            window.pictures.imgOverlay.classList.add('hidden');
+        });
+        evt.preventDefault();
+    })
 
 
 })();

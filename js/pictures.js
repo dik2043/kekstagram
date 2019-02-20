@@ -3,119 +3,46 @@
 // Файл отвечает за взаимодействия с пользователем
 
 (function () {
-
-// window.data.similarPhotoList.classList.remove('hidden');  /* почему при удалении этой строчки ничего не меняется? :D */
-
-
-// задание 4    задание 4    задание 4    задание 4    задание 4
-
-
-    var imgOverlay = document.querySelector('.img-upload__overlay');
-    var imgOverlayCloser = imgOverlay.querySelector('.img-upload__cancel');
-    var imgPreview = document.querySelector('.img-upload__preview').querySelector('img');
-    var uploadFile = document.querySelector('#upload-file');
+    
+    window.pictures = {};
+    
+    window.pictures.imgOverlay = document.querySelector('.img-upload__overlay');    /* контейнер превью */
+    var imgOverlayCloser = window.pictures.imgOverlay.querySelector('.img-upload__cancel');
+    var imgPreview = document.querySelector('.img-upload__preview').querySelector('img');  /* само фото */
+    var uploadFile = document.querySelector('#upload-file');        
     var scalePin = document.querySelector('.scale__pin');
     var scaleValue = document.querySelector('.resize__control--value');
     var scalePlus = document.querySelector('.resize__control--plus');
     var scaleMinus = document.querySelector('.resize__control--minus');
-    var effectsList = document.querySelector('.effects__list');
-    var effectsListItems = effectsList.querySelectorAll('.effects__radio');
-    var step = 25;
-    scaleValue.value = '100%';
+    var effectsList = document.querySelector('.effects__list');     /* контейнер с эффектами для фото */
+    var effectsListItems = effectsList.querySelectorAll('.effects__radio');     /* массив эффектов */
     var scaleLine = document.querySelector('.scale__line');
     var intensityEffect;
 
-    var textDescription = document.querySelector('.text__description');
-    var submitImg = document.querySelector('.img-upload__submit');
+    /* заменяем разметочный эффект на оригинал */
+    document.querySelector('#effect-heat').removeAttribute('checked');
+    document.querySelector('#effect-none').setAttribute('checked', 'checked');
 
-    /* Добавить эффект */
+    
+    // Взаимодействие с окном своего фото (по 110)
 
-    var addEffectToItem = function (evt) {
-        var clickedElem = evt.target;
-        scalePin.style.left = scaleLine.clientWidth + 'px';
-        document.querySelector('.scale__level').style.width = '100%';
-        /* ширина полосы */
-        /* сложная строчка - значение инпута, который в родителе кликнутого элемета */
-        var inputValue = clickedElem.parentNode.querySelector('input').value;
-        var imgClass = imgPreview.className;
-        imgPreview.removeAttribute('style');
-        if (imgClass) {
-            imgPreview.classList.remove(imgClass);
-        }
-        imgPreview.classList.add('effects__preview--' + inputValue);
-    };
-
-    /* Получить координаты от родителя */
-
-    var getCoordsInPreview = function (obj) {
-        var posY = obj.offsetTop;  // верхний отступ эл-та от родителя
-        var posX = obj.offsetLeft; // левый отступ эл-та от родителя
-        var coords = {
-            'x': posX,
-            'y': posY
-        };
-        return coords;
-    };
-
-    /* Получить значение шкалы интенсивности */
-
-    var getIntensityEffect = function () {
-        return Math.round(getCoordsInPreview(scalePin).x / scaleLine.clientWidth * 100);
-    };
-
-    /* Показать и закрыть блок фильтров */
-
+    /* как показать и закрыть блок фильтров */
     var showImgOverlay = function () {
-        imgPreview.className = 'effects__preview--none';
-        /* ставим класс без фильтра */
-        imgPreview.removeAttribute('style');
-        /* уюираем атрибуты фильтра*/
-        imgOverlay.classList.remove('hidden');
+        imgPreview.className = 'effects__preview--none';    /* ставим класс без фильтра */
+        imgPreview.removeAttribute('style');    /* уюираем атрибуты фильтра*/
+        window.pictures.imgOverlay.classList.remove('hidden');
         scaleValue.value = '100%';
-        imgPreview.style.transform = 'scale(' + 1 + ')';
+        imgPreview.style.transform = 'scale(' + 1 + ')';    /* делаем стандартный размер фото */
     };
-
     var closeImgOverlay = function () {
-        uploadFile.value = null;
-        imgOverlay.classList.add('hidden');
+        uploadFile.value = null;    /* сбрасываем значение поля, чтобы открыть потом по любому изменению */
+        window.pictures.imgOverlay.classList.add('hidden');
+        /* удалить слушатели */
         document.removeEventListener('keydown', onPreviewEscPress);
-        /* убрать слушатель */
         document.removeEventListener('keydown', onPreviewEnterPress);
     };
 
-    /* Добавить все нужные слушатели */
-
-    uploadFile.addEventListener('change', function () {
-        showImgOverlay();
-        scalePin.style.left = scaleLine.clientWidth + 'px';
-        document.querySelector('.scale__level').style.width = '100%';
-        /* ширина полосы */
-        document.addEventListener('keydown', onPreviewEscPress);
-        document.addEventListener('keydown', onPreviewEnterPress);
-    });
-
-    imgOverlayCloser.addEventListener('click', function () {
-        closeImgOverlay();
-    });
-
-    scalePlus.addEventListener('click', function () {
-        getSizePlus();
-    });
-
-    scaleMinus.addEventListener('click', function () {
-        getSizeMinus();
-    });
-
-
-    for (var i = 0; i < effectsListItems.length; i++) {
-        effectsListItems[i].addEventListener('click', function (evt) {
-            addEffectToItem(evt);
-        })
-    }
-    
-
-    /* Кнопки на preview */
-
+    /* как реагировать на нажатие кнопок ent и esc */
     var onPreviewEnterPress = function (evt) {
         if (evt.keyCode === 13 && evt.target.className === 'text__hashtags') {       /* если фокус на поле, то не закрываем */
             evt.target.blur();
@@ -123,7 +50,6 @@
             evt.target.blur();
         }
     };
-
     var onPreviewEscPress = function (evt) {
         if (evt.keyCode === 27 && evt.target.className === 'text__hashtags') {       /* если фокус на поле, то не закрываем */
             evt.target.blur();
@@ -134,8 +60,7 @@
         }
     };
 
-    /* Увеличить и уменьшить значение размера */
-
+    /* как изменять размер своего фото */
     var getSizePlus = function () {
         var value = scaleValue.value;
         var arr = value.split('%');
@@ -151,7 +76,6 @@
         imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
         return value;
     };
-
     var getSizeMinus = function () {
         var value = scaleValue.value;
         var arr = value.split('%');
@@ -167,15 +91,103 @@
         imgPreview.style.transform = 'scale(' + value1 / 100 + ')';
         return value;
     };
+    
 
-// как сделать нормально этот гребанный фильтр???
-    /* Функция перемещения пина фильтра */
+    /* добавляем обработчик открытия и закрытия своего фото */
+    uploadFile.addEventListener('change', function () {
+        showImgOverlay();
+        scalePin.style.left = scaleLine.clientWidth + 'px';
+        document.querySelector('.scale__level').style.width = '100%';       /* ширина полосы */
+        document.addEventListener('keydown', onPreviewEscPress);
+        document.addEventListener('keydown', onPreviewEnterPress);
+    });
+    imgOverlayCloser.addEventListener('click', function () {
+        closeImgOverlay();
+    });
 
+    /* добавляем обработчики изменения масштаба своего фото */
+    scalePlus.addEventListener('click', function () {
+        getSizePlus();
+    });
+    scaleMinus.addEventListener('click', function () {
+        getSizeMinus();
+    });
+    
+
+    // Взаимодействие с фильтром своего фото
+
+    /* как получить координаты от родителя */
+    var getCoordsInPreview = function (obj) {
+        var posY = obj.offsetTop;  // верхний отступ эл-та от родителя
+        var posX = obj.offsetLeft; // левый отступ эл-та от родителя
+        return {
+            'x': posX,
+            'y': posY
+        };
+    };
+
+    /* как получить значение шкалы интенсивности */
+    var getIntensityEffect = function () {
+        return Math.round(getCoordsInPreview(scalePin).x / scaleLine.clientWidth * 100);
+    };
+    
+    /* как применить эффект к фото */
+    var addEffectToItem = function (evt) {
+        var clickedElem = evt.target;
+        scalePin.style.left = scaleLine.clientWidth + 'px';     /* расположение пина */
+        document.querySelector('.scale__level').style.width = '100%';        /* ширина полосы */
+        /* сложная строчка - значение инпута, который в родителе кликнутого элемета */
+        var inputValue = clickedElem.parentNode.querySelector('input').value;
+        var imgClass = imgPreview.className;
+        imgPreview.removeAttribute('style');       /* чтобы не было предыдущих эффектов */
+        if (imgClass) {
+            imgPreview.classList.remove(imgClass);
+        }
+        imgPreview.classList.add('effects__preview--' + inputValue);
+    };
+
+    /* как менять уровень фильтра на фото */
+    var changeSaturation = function () {
+        intensityEffect = getIntensityEffect();
+        document.querySelector('.scale__level').style.width = intensityEffect + '%';    /* ширина полосы */
+        /* Большая некрасивая проверка */
+        switch (imgPreview.className) {
+            case 'effects__preview--chrome':
+                imgPreview.style.filter = 'grayscale(' + intensityEffect / 100 + ')';
+                console.log(imgPreview.className);
+                break;
+
+            case 'effects__preview--sepia':
+                imgPreview.style.filter = 'sepia(' + intensityEffect / 100 + ')';
+                break;
+
+            case 'effects__preview--marvin':
+                imgPreview.style.filter = 'invert(' + intensityEffect + '%)';
+                break;
+
+            case 'effects__preview--phobos':
+                imgPreview.style.filter = 'blur(' + intensityEffect / 33 + 'px)';
+                break;
+
+            case 'effects__preview--heat':
+                imgPreview.style.filter = 'brightness(' + Number(Number(1) + intensityEffect / 50) + ')';
+                break;
+        }
+    };
+
+    /* добавляем обработчики эффекта к своему фото */
+    for (var i = 0; i < effectsListItems.length; i++) {
+        effectsListItems[i].addEventListener('click', function (evt) {
+            addEffectToItem(evt);
+        })
+    }
+    
+    /* добавляем обработчик перемещения пина фильтра (сразу с объявлением) */
     scalePin.addEventListener('mousedown', function (evt) {
         evt.preventDefault();
 
         var startCoords = {
-            x: evt.clientX
+            x: evt.clientX      /* координата х кликнутого места */
         };
 
         var onMouseMove = function (moveEvt) {
@@ -210,36 +222,6 @@
         document.addEventListener('mouseup', onMouseUp);
     });
 
-    var changeSaturation = function () {
-        getIntensityEffect();
-        intensityEffect = getIntensityEffect();
-        document.querySelector('.scale__level').style.width = intensityEffect + '%';
-        /* ширина полосы */
-        console.log(intensityEffect);
-        /* Большая некрасивая проверка */
-        switch (imgPreview.className) {
-            case 'effects__preview--chrome':
-                imgPreview.style.filter = 'grayscale(' + intensityEffect / 100 + ')';
-                console.log(imgPreview.className);
-                break;
-
-            case 'effects__preview--sepia':
-                imgPreview.style.filter = 'sepia(' + intensityEffect / 100 + ')';
-                break;
-
-            case 'effects__preview--marvin':
-                imgPreview.style.filter = 'invert(' + intensityEffect + '%)';
-                break;
-
-            case 'effects__preview--phobos':
-                imgPreview.style.filter = 'blur(' + intensityEffect / 33 + 'px)';
-                break;
-
-            case 'effects__preview--heat':
-                imgPreview.style.filter = 'brightness(' + Number(Number(1) + intensityEffect / 50) + ')';
-                break;
-        }
-    };
 
 })();
 
@@ -247,4 +229,4 @@
 // Заметки
 // Как сделать проверку на разделение пробелом?
 // Как сделать проверку на регистр?
-// В заданиях пункт - при переключении на оригинал слайдер скрывается - как сделать?
+// В заданиях пункт - при переключении на оригинал слайдер скрывается - чекак?
