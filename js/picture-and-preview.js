@@ -11,7 +11,7 @@
     var bigPicture = document.querySelector('.big-picture');        /* открытая фотка */
     var similarCommentsList = document.querySelector('.social__comments');      /* список комментариев к фото */
     
-    /* как рендерить превьюшку */    
+    /* как рендерить одну превьюшку */    
     var renderPhoto = function (photo, id) {
         var photoElement = similarPhotoTemplate.cloneNode(true);
         photoElement.querySelector('.picture__img').src = photo.url;
@@ -23,16 +23,16 @@
     };
     
     /* как рендерить открытое большое фото */
-    var renderBigPhoto = function (bigPhoto) {
+    var renderBigPhoto = function (photo) {
         var commentFragment = document.createDocumentFragment();        /* ведро для комментариев */
-        bigPicture.querySelector('.big-picture__img').querySelector('img').src = bigPhoto.url;
-        bigPicture.querySelector('.likes-count').textContent = bigPhoto.likes;
-        bigPicture.querySelector('.comments-count').textContent = bigPhoto.comments.length;
-        bigPicture.querySelector('.social__caption').textContent = bigPhoto.description;
+        bigPicture.querySelector('.big-picture__img').querySelector('img').src = photo.url;
+        bigPicture.querySelector('.likes-count').textContent = photo.likes;
+        bigPicture.querySelector('.comments-count').textContent = photo.comments.length;
+        bigPicture.querySelector('.social__caption').textContent = photo.description;
         bigPicture.classList.remove('hidden');
       
         /* создаем комментарии с нуля */
-        for (var i = 0; i < bigPhoto.comments.length; i++) {
+        for (var i = 0; i < photo.comments.length; i++) {
             
             var newComment = document.createElement('li');
             newComment.className = 'social__comment social__comment--text';
@@ -42,14 +42,14 @@
             commentImg.height = 35;
             commentImg.alt = 'Аватар комментатора фотографии';
             commentImg.className = 'social__picture';
-            commentImg.src = bigPhoto.comments[i].avatar;
+            commentImg.src = photo.comments[i].avatar;
 
             newComment.appendChild(commentImg);
 
             var commentText = document.createElement('p');
             commentText.className = 'social__text';
             /* не понял, делать имя или нет? */
-            commentText.textContent = /* bigPhoto.comments[i].name + ': ' + */ bigPhoto.comments[i].message;
+            commentText.textContent = /* photo.comments[i].name + ': ' + */ photo.comments[i].message;
 
             newComment.appendChild(commentText);
             commentFragment.appendChild(newComment);
@@ -73,9 +73,30 @@
         return bigPicture;
     };
 
+    /*как рендерить все превьюшки сразу*/
+    var render = function (data) {
+        /* наверно очищаем фрагмент с фото для прикрепления новых фото */
+        // fragment.innerHTML = '';
+
+        /* создаем все превью и прикрепляем их к разметке */
+        for (var i = 0; i < data.length; i++) {
+            // fragment.appendChild(renderPhoto(data[i], i));
+            similarPhotoList.appendChild(renderPhoto(data[i], i));
+        }
+        // similarPhotoList.appendChild(fragment);
+        //
+        /* добавляем обработчик открытия большого фото на все превью */
+        var photoElements = document.querySelectorAll('.picture__img');
+        for (var i = 0; i < photoElements.length; i++) {
+            photoElements[i].addEventListener('click', function (evt) {
+                renderBigPhoto(data[getId(evt)]);
+            });
+        }
+    };
+
     /* как закрыть открытое фото (и по esc) */
     var closeBigPhoto = function (evt) {
-        var bigPhoto = document.querySelector('.big-picture__preview');
+        var photo = document.querySelector('.big-picture__preview');
         bigPicture.classList.add('hidden');
         document.removeEventListener('keydown', onPopupEscPress);       /* убрать слушатель */
     };
@@ -92,34 +113,122 @@
         var clickedElem = evt.target;
         return clickedElem.parentNode.dataset.offerId;   /* потому-что кликаем на img, а id на a */
     };
-    
+   
     
     // Отрисовываем превьюшки по полученным серверным данным    
     
-    window.backend.load(function (bigPhoto) {       /* bigPhoto - это параметр колбэка, данные с сервера */
-        
-        /* создаем все превью и прикрепляем их к разметке */
-        var fragment = document.createDocumentFragment();   /* ведро для превьюшек */        
-        for (var i = 0; i < bigPhoto.length; i++) {
-            fragment.appendChild(renderPhoto(bigPhoto[i], i));
-        }
-        similarPhotoList.appendChild(fragment);
-        
-        /* добавляем обработчик открытия большого фото на все превью */
-        var photos = document.querySelectorAll('.picture__img');
-        for (var i = 0; i < photos.length; i++) {
-            photos[i].addEventListener('click', function (evt) {
-                renderBigPhoto(bigPhoto[getId(evt)]);
-            });
-        }
-    });
+    var photos = [];
+    var fragment = document.createDocumentFragment();
+
+    /* что делать при успешной загрузке с сервера */
+    var successHandler = function (data) {
+        photos = data;
+        console.log(photos);
+        render(photos);
+    };
+
+    /* вызывем загрузку с сервера с колбэком рендеринга */
+    window.backend.load(successHandler);
 
     /* ну и удаляем ненужные блочки */    
     var commentLoader = document.querySelector('.social__loadmore');        /* кнопка "загрузить еще" */
     var commentCount = document.querySelector('.social__comment-count');        /* счетчик комментариев */    
     commentCount.classList.add('visually-hidden');
-    commentLoader.classList.add('visually-hidden')
-        
+    commentLoader.classList.add('visually-hidden');
+    
+    
+
+    // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   
+    
+    
+   
+    
+    /* как получить случайное число */
+    var getRandomNumber = function (min, max) {
+        return Math.round(Math.random() * (max - min) + min);
+    };
+
+    /* как удалить все превью из разметки */
+    var removeAllPhotos = function () {
+        var allPhotos = document.querySelectorAll('.picture__link');
+        for (var i = 0; i < allPhotos.length; i++) {
+            similarPhotoList.removeChild(allPhotos[i]);
+        }
+    };
+
+    
+    /* как получить из массива 10 случайных элементов  */
+    var getNewPhotos = function (arr, count) {
+        var newArr = [];
+        var transitArr = arr.concat();           /* копировать массив, чтобы не изменять стырый */
+        for (var i = 0; i < count; i++) {
+            var random = getRandomNumber(0, transitArr.length - 1);                    /* Как можно лучше? */
+            newArr[i] = transitArr[random];
+            transitArr.splice(random, 1);
+        }
+        return newArr;
+    };
+
+    /* просто возвращает тот же массив :) */
+    var getPopularPhotos = function (arr) { 
+        // var newArr = arr;
+        return arr;
+    };
+    
+    /* как отсортировать массив по количеству комментариев */
+    var getDiscussedPhotos = function (arr) {
+        var newArr = arr.concat();
+        newArr.sort(function (left, right) {
+            return right.comments.length - left.comments.length;
+        });
+        return newArr;
+    };
+
+    var classChanger = function () {
+        for (var key in buttons) {
+            buttons[key].classList.remove('img-filters__button--active')
+        }
+        this.classList.add('img-filters__button--active');
+    };
+    
+    /* показываем фильтры сортировки фотографий */
+    var imgFilters = document.querySelector('.img-filters');
+    imgFilters.classList.remove('img-filters--inactive');
+    console.log(imgFilters);
+
+    /* кнопки фильтров сортировки */
+    var buttons = {
+        popular: imgFilters.querySelectorAll('.img-filters__button')[0],
+        new: imgFilters.querySelectorAll('.img-filters__button')[1],
+        discussed: imgFilters.querySelectorAll('.img-filters__button')[2]
+    };
+
+    buttons.popular.addEventListener('click', function () {
+        for (var key in buttons) {
+            buttons[key].classList.remove('img-filters__button--active')
+        }
+        this.classList.add('img-filters__button--active');
+        removeAllPhotos();
+        render(getPopularPhotos(photos));
+    });
+    buttons.new.addEventListener('click', function () {
+        for (var key in buttons) {
+            buttons[key].classList.remove('img-filters__button--active')
+        }
+        this.classList.add('img-filters__button--active');
+        removeAllPhotos();
+        render(getNewPhotos(photos, 5));
+    });
+    buttons.discussed.addEventListener('click', function () {
+        for (var key in buttons) {
+            buttons[key].classList.remove('img-filters__button--active')
+        }
+        this.classList.add('img-filters__button--active');
+        removeAllPhotos();
+        render(getDiscussedPhotos(photos));
+    });
+    
 })();
 
 
